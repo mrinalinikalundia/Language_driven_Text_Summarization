@@ -159,6 +159,7 @@ prediction("Appellant, Kawas Manekshaw Nanavati , a commander in the Indian Navy
 from summarizer import Summarizer
 from pprint import pprint
 
+#bert exctractive summarizer
 text="""Appellant, Kawas Manekshaw Nanavati , a commander in the Indian Navy was charged for murder of deceased Prem Ahuja under section 302 and 304, part 1 of IPC. When the appellant was away for his work, his wife, Sylvia, nurtured an illicit relationship with Mr. Ahuja, a friend of Nanavati.
 On 27th April 1959 , Nanavati returned from one of his long voyages. When he came home, his wife seemed to be behaving strangely and was not responsive or affectionate to him. Sensing something, he asked, to which Sylvia confessed about her affair with Ahuja. That evening, Nanavati dropped Sylvia (wife) and their two children at a cinema hall and went to confront Ahuja. He first went to his ship, collected his pistol on a false pretext from the stores along with six bullets, completed his official duties and continued for Prem Ahuja's office. On not finding him there, he made his way to Ahuja's home where he found Ahuja. There was a verbal confrontation between the two men. After the confrontation, there was an altercation after which three shots were fired and Prem Ahuja dropped dead. Nanavati headed straight to confess to the Provost Marshal of the Western Naval Command and later turned himself over to the Deputy Commissioner of Police.
 The jury found him not guilty of murder which did not find favour with the Sessions Judge and he referred the case to Bombay High Court. The Bombay High Court dismissed the Jury's decision and convicted Nanavati under section 302 and 304 Part 1 of IPC.
@@ -180,13 +181,21 @@ full=''.join(result)
 
 pprint(full)
 
+#Distilbert version of bert base model
+model1 = Summarizer('distilbert-base-uncased')
+
+result1=model1(data,max_length=400,min_length=100)
+
+full1=''.join(result1)
+
+pprint(full1)
+
+#hugging face transformer
 from transformers import pipeline
 
 summarizer = pipeline("summarization")
 
 summarizer(full, max_length=150, min_length=100, do_sample=False)
-
-model1 = Summarizer('distilbert-base-uncased')
 
 import time
 start = time.time()
@@ -196,6 +205,8 @@ end = time.time()
 print(f'Response Time: {end-start}')
 print(f'Summary: {resp}')
 
+resp
+
 start1 = time.time()
 resp1=model1(data)
 end1 = time.time()
@@ -203,16 +214,14 @@ end1 = time.time()
 print(f'Response Time: {end1-start1}')
 print(f'Summary: {resp1}')
 
+resp1
+
 start2 = time.time()
 resp2=summarizer(data)
 end2 = time.time()
 
 print(f'Response Time: {end2-start2}')
 print(f'Summary: {resp2}')
-
-resp1
-
-resp
 
 resp2
 
